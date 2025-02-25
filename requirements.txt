@@ -8,3 +8,6 @@ pandas
 pillow
 seaborn
 tqdm
+face_recognition
+dlib
+cmake
