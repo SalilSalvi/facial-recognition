@@ -1,6 +1,7 @@
 Flask
 opencv-python-headless
 numpy
+setuptools
 gunicorn
 ipykernel
 pandas
