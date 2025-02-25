@@ -6,7 +6,7 @@ import pickle
 app = Flask(__name__)
 
 # Load the face encodings
-with open('face_encodings.pkl', 'rb') as f:
+with open('ccino_face.pkl', 'rb') as f:
     known_face_encodings = pickle.load(f)
 
 @app.route('/')
