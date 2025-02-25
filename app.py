@@ -11,7 +11,7 @@ with open('ccino_face.pkl', 'rb') as f:
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    return render_template('template/index.html')
 
 @app.route('/video_feed')
 def video_feed():
@@ -49,7 +49,7 @@ def video_feed():
 
 @app.route('/access_granted')
 def access_granted():
-    return render_template('access_granted.html')
+    return render_template('template/access_granted.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
