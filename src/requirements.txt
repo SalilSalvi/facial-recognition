@@ -1,0 +1,10 @@
+Flask
+opencv-python
+opencv-python-headless
+numpy
+gunicorn
+ipykernel
+pandas
+pillow
+seaborn
+tqdm
