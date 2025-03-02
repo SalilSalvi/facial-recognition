@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Authentication</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth_style.css') }}">
+</head>
+<!-- <body class="auth-page">
+    <div class="container">
+        <div class="auth-box">
+            <h1>Welcome</h1>
+            <p class="subtitle">Please look at the camera for authentication</p>
+            
+            <div class="camera-container">
+                <video id="webcam" autoplay playsinline></video>
+                <canvas id="canvas" style="display: none;"></canvas>
+                <div id="loading" class="hidden">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            
+            <div class="button-container">
+                <button id="authenticate" class="primary-button">Authenticate</button>
+            </div>
+            
+            <div id="status" class="status-message hidden"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+</body> -->
+
+<body class="auth-page">
+    <div class="container">
+        <div class="auth-box"></div>
+            <h1>Facial Recognition Portal</h1>
+            <p>Please look directly at the camera for verification.</p>
+                <div class="camera-container">
+                    <video id="webcam" autoplay playsinline></video>
+                    <canvas id="canvas" style="display: none;"></canvas>
+                    <div id="loading" class="hidden">
+                        <div class="spinner"></div>
+                    </div>                    
+                    <div class="scan-overlay">
+                        <div class="scan-line"></div>
+                    </div>
+                </div>
+                
+                <div class="button-container">
+                    <button id="authenticate" class="primary-button">Authenticate</button>
+                </div>
+                <div id="status" class="status-message hidden"></div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        © 2025 Secure Recognition System
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/camera.js') }}"></script>
+</body>
+
+</html>

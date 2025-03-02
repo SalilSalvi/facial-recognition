@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Gallery</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/content_style.css') }}">
+</head>
+<!-- <body class="content-page">
+    <header>
+        <h1>Welcome, {{ name }}</h1>
+        <a href="{{ url_for('logout') }}" class="logout-link">Logout</a>
+    </header> -->
+
+    <!-- <div class="gallery-container">
+        <div class="gallery">
+            {% for item in items %}
+            <div class="gallery-item {% if loop.first %}active{% else %}hidden{% endif %}" data-id="{{ item.id }}">
+                <div class="image-container">
+                    <img src="{{ url_for('static', filename=item.image.replace('static/', '')) }}" alt="Gallery image {{ item.id }}">
+                </div>
+                <div class="poem-container">
+                    <div class="poem">
+                        {% for line in item.poem.split('\n') %}
+                        <p>{{ line }}</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <div class="gallery-controls">
+            <button id="prev" class="gallery-button">&laquo; Previous</button>
+            <div class="gallery-dots">
+                {% for item in items %}
+                <span class="dot {% if loop.first %}active{% endif %}" data-id="{{ item.id }}"></span>
+                {% endfor %}
+            </div>
+            <button id="next" class="gallery-button">Next &raquo;</button>
+        </div>
+    </div> -->
+
+<body>
+    <!-- Welcome Overlay -->
+    <div class="welcome-overlay">
+        <div class="welcome-text">Welcome, {{ name }}</div>
+        <div class="welcome-name">You've Unlocked My Heart</div>
+    </div>
+
+    <div class="container">
+        <!-- <header>
+            <h1>Poetry Collection</h1>
+        </header> -->
+        
+        <div class="content-frame">
+            <div class="split-content" id="frameContainer">
+                <!-- Frame 1 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/photo1.jpg') }}" alt="Autumn Forest">
+                            <div class="photo-title">Autumn Forest</div>
+                        </div>
+                    </div>
+                    <div class="poem-section">
+                        <h2 class="poem-title">Nothing Gold Can Stay</h2>
+                        <div class="poem-author">by Robert Frost</div>
+                        <div class="poem-content">
+                            Nature's first green is gold,
+                            Her hardest hue to hold.
+                            Her early leaf's a flower;
+                            But only so an hour.
+                            Then leaf subsides to leaf.
+                            So Eden sank to grief,
+                            So dawn goes down to day.
+                            Nothing gold can stay.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Frame 2 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/photo2.jpg') }}" alt="Ocean Waves">
+                            <div class="photo-title">Ocean Waves</div>
+                        </div>
+                    </div>
+                    <div class="poem-section">
+                        <h2 class="poem-title">Sea Fever</h2>
+                        <div class="poem-author">by John Masefield</div>
+                        <div class="poem-content">
+                            I must go down to the seas again, to the lonely sea and the sky,
+                            And all I ask is a tall ship and a star to steer her by;
+                            And the wheel's kick and the wind's song and the white sail's shaking,
+                            And a grey mist on the sea's face, and a grey dawn breaking.
+
+                            I must go down to the seas again, for the call of the running tide
+                            Is a wild call and a clear call that may not be denied;
+                            And all I ask is a windy day with the white clouds flying,
+                            And the flung spray and the blown spume, and the sea-gulls crying.
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Frame 3 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/photo3.jpg') }}" alt="Night Sky">
+                            <div class="photo-title">Night Sky</div>
+                        </div>
+                    </div>
+                    <div class="poem-section">
+                        <h2 class="poem-title">When I Heard the Learn'd Astronomer</h2>
+                        <div class="poem-author">by Walt Whitman</div>
+                        <div class="poem-content">
+                            When I heard the learn'd astronomer,
+                            When the proofs, the figures, were ranged in columns before me,
+                            When I was shown the charts and diagrams, to add, divide, and measure them,
+                            When I sitting heard the astronomer where he lectured with much applause in the lecture-room,
+                            How soon unaccountable I became tired and sick,
+                            Till rising and gliding out I wander'd off by myself,
+                            In the mystical moist night-air, and from time to time,
+                            Look'd up in perfect silence at the stars.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="navigation">
+                <div class="nav-button" id="prevBtn">
+                    <i class="fas fa-chevron-left"></i>
+                </div>
+                <div class="nav-button" id="nextBtn">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+            
+            <div class="nav-dots" id="navDots">
+                <!-- Dots will be added by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const frameContainer = document.getElementById('frameContainer');
+            const frames = document.querySelectorAll('.frame');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const navDots = document.getElementById('navDots');
+            
+            let currentFrame = 0;
+            let frameCount = frames.length;
+            
+            // Create navigation dots
+            for (let i = 0; i < frameCount; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('dot');
+                if (i === 0) dot.classList.add('active');
+                dot.dataset.index = i;
+                dot.addEventListener('click', () => {
+                    goToFrame(i);
+                });
+                navDots.appendChild(dot);
+            }
+            
+            // Update the display
+            function updateDisplay() {
+                frameContainer.style.transform = `translateX(-${currentFrame * 100}%)`;
+                
+                // Update dots
+                document.querySelectorAll('.dot').forEach((dot, index) => {
+                    if (index === currentFrame) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+            }
+            
+            // Go to specific frame
+            function goToFrame(index) {
+                currentFrame = index;
+                updateDisplay();
+            }
+            
+            // Next frame
+            function nextFrame() {
+                currentFrame = (currentFrame + 1) % frameCount;
+                updateDisplay();
+            }
+            
+            // Previous frame
+            function prevFrame() {
+                currentFrame = (currentFrame - 1 + frameCount) % frameCount;
+                updateDisplay();
+            }
+            
+            // Event listeners
+            prevBtn.addEventListener('click', prevFrame);
+            nextBtn.addEventListener('click', nextFrame);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowRight') {
+                    nextFrame();
+                } else if (e.key === 'ArrowLeft') {
+                    prevFrame();
+                }
+            });
+        });
+    </script>
+
+    <!-- <div class="gallery-controls">
+        <button id="prev" class="gallery-button">&laquo; Previous</button>
+        <div class="gallery-dots">
+            {% for item in items %}
+            <span class="dot {% if loop.first %}active{% endif %}" data-id="{{ item.id }}"></span>
+            {% endfor %}
+        </div>
+        <button id="next" class="gallery-button">Next &raquo;</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/gallery.js') }}"></script> -->
+</body>
+</html>

@@ -1,98 +1,158 @@
-from flask import Flask, render_template, Response, redirect, url_for, jsonify
-import cv2
-import face_recognition
-import pickle
-import numpy as np
 import os
+import base64
+import re
+import json
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+import numpy as np
+import face_recognition
+from utils.face_recognition import FaceRecognizer
+from werkzeug.middleware.proxy_fix import ProxyFix
 
-app = Flask(__name__)
+# Initialize face recognizer
+face_recognizer = FaceRecognizer("face_encodings.pkl")
 
-# Create static folder if it doesn't exist
-os.makedirs('static', exist_ok=True)
+# Content data structure
+content = []
 
-# Load the face encodings
-with open('ccino_face.pkl', 'rb') as f:
-    known_face_encodings = pickle.load(f)
+def load_content():
+    """Load photos and poems for the gallery"""
+    global content
+    
+    # In a production app, this would load from a database
+    content = [
+        {
+            "id": 1,
+            "image": "static/img/content/photo1.jpg",
+            "poem": "Whispers of dawn,\nDelicate light unfolds,\nA new day begins."
+        },
+        {
+            "id": 2,
+            "image": "static/img/content/photo2.jpg",
+            "poem": "Mountain silhouette,\nStrength enduring through all time,\nWisdom in stillness."
+        },
+        {
+            "id": 3,
+            "image": "static/img/content/photo3.jpg",
+            "poem": "Ocean waves dancing,\nEndless rhythm of the tides,\nEternity speaks."
+        }
+    ]
 
-# Global variable to track match status
-match_found = False
+def create_app():
+    app = Flask(__name__)
+    app.secret_key = os.environ.get('SECRET_KEY', 'development-secret-key')
+    app.wsgi_app = ProxyFix(app.wsgi_app)
+    
+    # Initialize app
+    with app.app_context():
+        initialize()
+    
+    @app.route('/')
+    def index():
+        """Main authentication page"""
+        return render_template('auth.html')
 
-@app.route('/')
-def index():
-    global match_found
-    match_found = False
-    return render_template('index.html')
-
-@app.route('/check_match')
-def check_match():
-    global match_found
-    if match_found:
-        match_found = False  # Reset for next use
-        return jsonify({"match": True})
-    return jsonify({"match": False})
-
-@app.route('/video_feed')
-def video_feed():
-    def gen():
-        global match_found
-        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-        cap = cv2.VideoCapture(0)
+    @app.route('/verify', methods=['POST'])
+    def verify():
+        """API endpoint to verify a face from webcam data"""
+        # Get image data from the request
+        data = request.json
+        if not data or 'image' not in data:
+            return jsonify({'success': False, 'error': 'No image data'})
         
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-
-            # Resize frame for faster processing
-            small_frame = cv2.resize(frame, (0, 0), fx=0.25, fy=0.25)
+        try:
+            # Process the base64 image
+            image_data = data['image'].split(',')[1]
+            image_bytes = base64.b64decode(image_data)
             
-            rgb_small_frame = np.ascontiguousarray(small_frame[:, :, ::-1])
-
-            # Recognize face
-            face_locations = face_recognition.face_locations(rgb_small_frame)
-            face_encodings = face_recognition.face_encodings(rgb_small_frame, face_locations)
+            # Create a temporary file for face_recognition to process
+            import tempfile
+            with tempfile.NamedTemporaryFile(suffix='.jpg', delete=False) as temp_file:
+                temp_filename = temp_file.name
+                temp_file.write(image_bytes)
             
-            for face_encoding in face_encodings:
-                matches = face_recognition.compare_faces(known_face_encodings, face_encoding)
-                if True in matches:
-                    match_found = True
-
-            gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            # Detect and recognize faces
+            image = face_recognition.load_image_file(temp_filename)
+            os.unlink(temp_filename)  # Delete the temporary file
             
-            # Detect faces
-            faces = face_cascade.detectMultiScale(
-                gray,
-                scaleFactor=1.1,
-                minNeighbors=5,
-                minSize=(30, 30)
-            )
+            face_locations = face_recognition.face_locations(image)
             
-            # Draw rectangle around faces with an elegant color
-            for (x, y, w, h) in faces:
-                cv2.rectangle(frame, (x, y), (x+w, y+h), (148, 131, 201), 2)  # Lavender color for elegance
+            if not face_locations:
+                return jsonify({'success': False, 'error': 'No face detected'})
+            
+            # Get face encodings for the faces in the image
+            face_encodings = face_recognition.face_encodings(image, face_locations)
+            
+            # Check if any of the faces match our known faces
+            is_recognized, name = face_recognizer.recognize_face(face_encodings[0])
+            
+            if is_recognized:
+                # Set a session cookie to maintain authentication
+                session['authenticated'] = True
+                session['user_name'] = name
                 
-                # Add text with recognized status
-                if match_found:
-                    cv2.putText(frame, "Recognized", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (148, 131, 201), 2)
-
-            ret, jpeg = cv2.imencode('.jpg', frame)
-            frame = jpeg.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
-            
-            if match_found:
-                # Don't try to redirect here, just break the loop after sending a few more frames
-                # This makes the UI experience smoother
-                if cv2.waitKey(3000):  # Wait for 3 seconds to show the "Recognized" status
-                    break
+                return jsonify({
+                    'success': True, 
+                    'authenticated': True,
+                    'name': name
+                })
+            else:
+                return jsonify({
+                    'success': True,
+                    'authenticated': False,
+                    'error': 'Face not recognized'
+                })
                 
-        cap.release()
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)})
+
+    @app.route('/content')
+    def content_page():
+        """Content page with gallery (protected by authentication)"""
+        if not session.get('authenticated', False):
+            return redirect(url_for('index'))
         
-    return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
+        # return render_template('content.html', 
+        #                     name=session.get('user_name', 'User'),
+        #                     items=content)
+        return render_template('content.html', 
+                            name=session.get('user_name', 'User'))
 
-@app.route('/access_granted')
-def access_granted():
-    return render_template('access_granted.html')
+
+    @app.route('/api/content')
+    def get_content():
+        """API endpoint to get content data"""
+        if not session.get('authenticated', False):
+            return jsonify({'error': 'Not authenticated'}), 401
+        
+        # return jsonify({'success': True, 'content': content})
+        return jsonify({'success': True})
+
+    @app.route('/logout')
+    def logout():
+        """Log out the user by clearing the session"""
+        session.clear()
+        return redirect(url_for('index'))
+        
+    return app
+
+def initialize():
+    """Initialize application - load models and content"""
+    # Try to load the model, train if not available
+    if not face_recognizer.load_model():
+        static_folder = os.path.join(os.path.dirname(__file__), 'static')
+        reference_dir = os.path.join(static_folder, 'img', 'reference')
+        if os.path.exists(reference_dir) and os.listdir(reference_dir):
+            face_recognizer.train_on_directory(reference_dir)
+        else:
+            print("Warning: No reference images found for training")
+    
+    # Load content data
+    load_content()
+
+# Create the app instance
+app = create_app()
 
 if __name__ == '__main__':
+    # port = int(os.environ.get('PORT', 5000))
+    # app.run(host='0.0.0.0', port=port, debug=True)
     app.run(debug=True)
