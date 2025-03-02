@@ -2,10 +2,194 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Face Unlock</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facial Recognition Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #4a4a68;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(138, 143, 168, 0.2);
+            text-align: center;
+        }
+        
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 400;
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            color: #5e5c7f;
+            letter-spacing: 1px;
+        }
+        
+        p {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+            font-size: 1rem;
+            color: #6c6c8b;
+        }
+        
+        .video-container {
+            position: relative;
+            margin: 0 auto;
+            width: 100%;
+            max-width: 640px;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(138, 143, 168, 0.15);
+        }
+        
+        .video-feed {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .scan-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 2px solid #a891d9;
+            border-radius: 8px;
+            box-sizing: border-box;
+            pointer-events: none;
+        }
+        
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #a891d9 50%, transparent);
+            box-shadow: 0 0 8px #a891d9;
+            animation: scan 2.5s linear infinite;
+        }
+        
+        .status {
+            margin-top: 1.5rem;
+            font-size: 1rem;
+            color: #6c6c8b;
+        }
+        
+        .loading {
+            display: inline-block;
+            margin-left: 5px;
+        }
+        
+        .loading span {
+            display: inline-block;
+            width: 5px;
+            height: 5px;
+            background-color: #a891d9;
+            border-radius: 50%;
+            margin: 0 2px;
+            animation: loading 1.5s infinite ease-in-out;
+        }
+        
+        .loading span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+        
+        .loading span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+        
+        @keyframes scan {
+            0% {
+                top: 0;
+            }
+            100% {
+                top: 100%;
+            }
+        }
+        
+        @keyframes loading {
+            0%, 100% {
+                transform: scale(0.5);
+                opacity: 0.5;
+            }
+            50% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+        
+        footer {
+            margin-top: 2rem;
+            font-size: 0.8rem;
+            color: #8d8da8;
+        }
+    </style>
+    <script>
+        // Check for match status every second
+        function checkForMatch() {
+            fetch('/check_match')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.match) {
+                        document.getElementById('status-text').innerHTML = 'Identity verified! Redirecting...';
+                        setTimeout(() => {
+                            window.location.href = '/access_granted';
+                        }, 1500);
+                    }
+                });
+        }
+        
+        // Start checking once the page is loaded
+        window.onload = function() {
+            setInterval(checkForMatch, 1000);
+        }
+    </script>
 </head>
 <body>
-    <h1>Face Unlock</h1>
-    <button onclick="window.location.href='/video_feed'">Click to Unlock</button>
+    <div class="container">
+        <h1>Facial Recognition Portal</h1>
+        <p>Please look directly at the camera for verification.</p>
+        
+        <div class="video-container">
+            <img class="video-feed" src="{{ url_for('video_feed') }}" alt="Video Feed">
+            <div class="scan-overlay">
+                <div class="scan-line"></div>
+            </div>
+        </div>
+        
+        <div class="status">
+            <span id="status-text">Scanning for authorized faces</span>
+            <div class="loading">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        © 2025 Secure Recognition System
+    </footer>
 </body>
 </html>
