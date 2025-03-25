@@ -44,8 +44,8 @@
 <body>
     <!-- Welcome Overlay -->
     <div class="welcome-overlay">
-        <div class="welcome-text">Welcome, {{ name }}</div>
-        <div class="welcome-name">You've Unlocked My Heart</div>
+        <div class="welcome-text">&#128141;Welcome, Baby-{{ name }}&#128141;</div>
+        <div class="welcome-name">&#128156;You've Unlocked My Heart&#128156;</div>
     </div>
 
     <div class="container">
@@ -55,78 +55,234 @@
         
         <div class="content-frame">
             <div class="split-content" id="frameContainer">
+
+                <!-- Frame 7 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/opening_slide_1.jpg') }}" alt="Gemini x Libra">
+                            <div class="photo-title">Gemini x Libra</div>
+                        </div>
+                    </div>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/opening_slide_2.jpg') }}" alt="Ccino & Shiro">
+                            <div class="photo-title">Ccino & Shiro</div>
+                        </div>
+                    </div>
+                </div> 
+
                 <!-- Frame 1 -->
                 <div class="frame">
                     <div class="photo-section">
                         <div class="photo-container">
-                            <img class="photo" src="{{ url_for('static', filename='img/content/photo1.jpg') }}" alt="Autumn Forest">
-                            <div class="photo-title">Autumn Forest</div>
+                            <img class="photo" src="{{ url_for('static', filename='img/content/kaha_thi_tum.jpg') }}" alt="Lost and Found">
+                            <div class="photo-title">Lost and Found</div>
                         </div>
                     </div>
                     <div class="poem-section">
-                        <h2 class="poem-title">Nothing Gold Can Stay</h2>
-                        <div class="poem-author">by Robert Frost</div>
+                        <h2 class="poem-title">Chapter 1 : &#128156;Kaha Thi Tum?&#128156;</h2>
+                        <!-- <div class="poem-author">by Robert Frost</div> -->
                         <div class="poem-content">
-                            Nature's first green is gold,
-                            Her hardest hue to hold.
-                            Her early leaf's a flower;
-                            But only so an hour.
-                            Then leaf subsides to leaf.
-                            So Eden sank to grief,
-                            So dawn goes down to day.
-                            Nothing gold can stay.
+                            Akela tha mai. Adhura tha mai. Bass tanhai thi meri humsafar.
+                            Ek ishq ki aandhi aayi, aur jagaa di meri soyi hui qadar...
+                            
+                            Aankhon se aankhein mili. Baaton se baatein mili.
+                            Raaton se raatein mili, anjaan mulaakaatein mili...
+                            
+                            Meri rooh ko teri chahat mil gayi, mere Ishq ko ibaadat mil gayi.
+                            Dimaag apni jagah par theher gaya, jab mere dil ko ek nayi raah mil gayi...                            
                         </div>
                     </div>
                 </div>
+
+                <!-- Frame 7 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_0_1.jpg') }}" alt="Melting">
+                            <div class="photo-title">Melting</div>
+                        </div>
+                    </div>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_0_2.jpg') }}" alt="Annoying">
+                            <div class="photo-title">Annoying</div>
+                        </div>
+                    </div>
+                </div>                 
                 
                 <!-- Frame 2 -->
                 <div class="frame">
                     <div class="photo-section">
                         <div class="photo-container">
-                            <img class="photo" src="{{ url_for('static', filename='img/content/photo2.jpg') }}" alt="Ocean Waves">
-                            <div class="photo-title">Ocean Waves</div>
+                            <img class="photo" src="{{ url_for('static', filename='img/content/Serendipity.jpg') }}" alt="Meet Cute, Met Cute">
+                            <div class="photo-title">Meet Cute, Met Cute</div>
                         </div>
                     </div>
                     <div class="poem-section">
-                        <h2 class="poem-title">Sea Fever</h2>
-                        <div class="poem-author">by John Masefield</div>
+                        <h2 class="poem-title">Chapter 2 : &#128156;Serendipity&#128156;</h2>
+                        <!-- <div class="poem-author">by John Masefield</div> -->
                         <div class="poem-content">
-                            I must go down to the seas again, to the lonely sea and the sky,
-                            And all I ask is a tall ship and a star to steer her by;
-                            And the wheel's kick and the wind's song and the white sail's shaking,
-                            And a grey mist on the sea's face, and a grey dawn breaking.
-
-                            I must go down to the seas again, for the call of the running tide
-                            Is a wild call and a clear call that may not be denied;
-                            And all I ask is a windy day with the white clouds flying,
-                            And the flung spray and the blown spume, and the sea-gulls crying.
+                            A chance encounter, a held gaze, a fairy tale that started to unfold.
+                            A new dimension, an untrodden trail and all explanations went unsold...
+                            
+                            A touch of electricity, a spark of life and I woke up in fables untold.
+                            A royal flush, my chips all in, yet that dazzling smile makes me fold...                            
                         </div>
                     </div>
                 </div>
+
+                <!-- Frame 7 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_1_1.jpg') }}" alt="Dates">
+                            <div class="photo-title">Dates</div>
+                        </div>
+                    </div>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_1_2.jpg') }}" alt="Shenanigans">
+                            <div class="photo-title">Shenanigans</div>
+                        </div>
+                    </div>
+                </div>                  
                 
                 <!-- Frame 3 -->
                 <div class="frame">
                     <div class="photo-section">
                         <div class="photo-container">
-                            <img class="photo" src="{{ url_for('static', filename='img/content/photo3.jpg') }}" alt="Night Sky">
-                            <div class="photo-title">Night Sky</div>
+                            <img class="photo" src="{{ url_for('static', filename='img/content/who_are_you_queen.jpg') }}" alt="Drop Dead Gorgeous">
+                            <div class="photo-title">Drop Dead Gorgeous</div>
                         </div>
                     </div>
                     <div class="poem-section">
-                        <h2 class="poem-title">When I Heard the Learn'd Astronomer</h2>
-                        <div class="poem-author">by Walt Whitman</div>
+                        <h2 class="poem-title">Chapter 3 : &#128156;Who Are You, Queen?&#128156;</h2>
+                        <!-- <div class="poem-author">by Walt Whitman</div> -->
                         <div class="poem-content">
-                            When I heard the learn'd astronomer,
-                            When the proofs, the figures, were ranged in columns before me,
-                            When I was shown the charts and diagrams, to add, divide, and measure them,
-                            When I sitting heard the astronomer where he lectured with much applause in the lecture-room,
-                            How soon unaccountable I became tired and sick,
-                            Till rising and gliding out I wander'd off by myself,
-                            In the mystical moist night-air, and from time to time,
-                            Look'd up in perfect silence at the stars.
+                            Each day was a piece added to the jigsaw,
+                            Each night was dream, painted as a picture..
+                            
+                            A joke here, a tear there, "honey what all do you you fear?"
+                            Lights off, any germ, or whatever comes near..."
+                            
+                            Anything good about me was because "I am a Gemini",
+                            Anything bad? "Well.. coz you're just a stoopid boy"
+                            
+                            "Excuse me, miss Libra! Are you a princess who poops sunshine and rainbows?"
+                            "Why yes sir, there are no farts and boogers, where there are curtsies and bows!"                            
                         </div>
                     </div>
                 </div>
+
+                <!-- Frame 7 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_2_1.jpg') }}" alt="Embrace">
+                            <div class="photo-title">Embrace</div>
+                        </div>
+                    </div>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_2_2.jpg') }}" alt="Envelope">
+                            <div class="photo-title">Envelope</div>
+                        </div>
+                    </div>
+                </div>                  
+
+                <!-- Frame 4 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/Faasle.jpg') }}" alt="Dooriyan 0 : 1 Us">
+                            <div class="photo-title">Dooriyan 0 : 1 Us</div>
+                        </div>
+                    </div>
+                    <div class="poem-section">
+                        <h2 class="poem-title">Chapter 4 : &#128156;Faasle&#128156;</h2>
+                        <!-- <div class="poem-author">by Walt Whitman</div> -->
+                        <div class="poem-content">
+                            Nazdeekiyaan dooriyan bann gayi, karwatein tanhaaiya bann gayi.
+                            Mulakaatein yaadein bann gayi, aur baatein kahaaniya ban gayi...
+                            
+                            Jism ek ho gaye the, jaanein jul gayi thi.
+                            Bass kambakht taqdeer hi thi jo Humse jal si gayi thi...
+                            
+                            Kismat ki kahaniyo me meelo ke faasle likhe the,
+                            Mushkil ghadiyo me bass humare hausle likhe the...
+                            
+                            Har din ek nayi jung hai aur har raat ek nayi wajah.
+                            Teri tasveerein hi meri shauhrat bhi hai, aur vahi meri sajaa...
+                            
+                            Dil me ek kami bhi hai, aur aakhon me nami bhi hai.
+                            Ye asoon jo aaj khatti nadiya hai, kal khushiyon ki baarish bhi hai...                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Frame 7 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_3_1.jpg') }}" alt="So Near">
+                            <div class="photo-title">So Near</div>
+                        </div>
+                    </div>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/filler_3_2.jpg') }}" alt="So Far">
+                            <div class="photo-title">So Far</div>
+                        </div>
+                    </div>
+                </div>                
+
+                <!-- Frame 5 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/forevermore.jpg') }}" alt="To Infinity and Beyond">
+                            <div class="photo-title">To Infinity and Beyond</div>
+                        </div>
+                    </div>
+                    <div class="poem-section">
+                        <h2 class="poem-title">Chapter 5 : &#128156;Forevermore&#128156;</h2>
+                        <!-- <div class="poem-author">by Walt Whitman</div> -->
+                        <div class="poem-content">
+                            Two kindred spirits once played a waiting game...
+                            Logic laughed at them but they marched ahead all the same.
+                            
+                            Two entwined lips once played a waiting game...
+                            The world laughed but they smiled and kissed all the same.
+                            
+                            Two beating hearts once played a waiting game...
+                            Jealousy roared, but it's attempts were too weak tame.
+                            
+                            Two lusty bodies once played a waiting game...
+                            Temptation leered, but alas, love quickly put it to shame.
+                            
+                            Two insecurities wondered who to blame...
+                            But hand in hand, we smiled. "We're winning the waiting game."                            
+                        </div>
+                    </div>
+                </div> 
+                
+                <!-- Frame 6 -->
+                <div class="frame">
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/3_down.jpg') }}" alt="Forever">
+                            <div class="photo-title">Forever</div>
+                        </div>
+                    </div>
+                    <div class="photo-section">
+                        <div class="photo-container">
+                            <img class="photo" src="{{ url_for('static', filename='img/content/a_lifetime_togo.jpg') }}" alt="Valentine">
+                            <div class="photo-title">Valentine</div>
+                        </div>
+                    </div>
+                </div>              
             </div>
 
             <div class="navigation">
