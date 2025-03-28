@@ -92,7 +92,7 @@ class FaceRecognizer:
         matches = face_recognition.compare_faces(
             self.known_face_encodings, 
             face_encoding, 
-            tolerance=0.6
+            tolerance=0.4
         )
         
         # Get distances (lower distance = better match)
